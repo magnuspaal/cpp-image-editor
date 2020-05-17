@@ -1,0 +1,6 @@
+#ifndef CPPIMAGEEDITOR_HELP_H
+#define CPPIMAGEEDITOR_HELP_H
+
+void help();
+
+#endif //CPPIMAGEEDITOR_HELP_H
