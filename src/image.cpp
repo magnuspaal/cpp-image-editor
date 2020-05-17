@@ -24,7 +24,7 @@ void Image::flip(string axis) {
     if(axis == "v") {
         for (int row = 0; row < img->height(); row++) {
             for (int cell = 0; cell < img->width(); cell++) {
-                if (cell <= img->width() - cell) {
+                if (cell <= img->width() - (cell + 1)) {
 
                     unsigned char px1[] = {
                             *(img->data(cell, row, 0, 0)),
@@ -32,9 +32,9 @@ void Image::flip(string axis) {
                             *(img->data(cell, row, 0, 2))};
 
                     unsigned char px2[] = {
-                            *(img->data(img->width() - cell, row, 0, 0)),
-                            *(img->data(img->width() - cell, row, 0, 1)),
-                            *(img->data(img->width() - cell, row, 0, 2))};
+                            *(img->data(img->width() - (cell + 1), row, 0, 0)),
+                            *(img->data(img->width() - (cell + 1), row, 0, 1)),
+                            *(img->data(img->width() - (cell + 1), row, 0, 2))};
 
                     img->draw_point(img->width() - cell, row, px1);
                     img->draw_point(cell, row, px2);
@@ -46,17 +46,16 @@ void Image::flip(string axis) {
     } else if (axis == "h") {
         for (int cell = 0; cell < img->width(); cell++) {
             for (int row = 0; row < img->height(); row++) {
-                if (row <= img->height() - row) {
-
+                if (row <= img->height() - (row + 1)) {
                     unsigned char px1[] = {
                             *(img->data(cell, row, 0, 0)),
                             *(img->data(cell, row, 0, 1)),
                             *(img->data(cell, row, 0, 2))};
 
                     unsigned char px2[] = {
-                            *(img->data(cell, img->height() - row, 0, 0)),
-                            *(img->data(cell, img->height() - row, 0, 1)),
-                            *(img->data(cell, img->height() - row, 0, 2))};
+                            *(img->data(cell, img->height() - (row + 1), 0, 0)),
+                            *(img->data(cell, img->height() - (row + 1), 0, 1)),
+                            *(img->data(cell, img->height() - (row + 1), 0, 2))};
 
                     img->draw_point(cell, img->height() - row, px1);
                     img->draw_point(cell, row, px2);
@@ -71,39 +70,45 @@ void Image::flip(string axis) {
 }
 
 void Image::rotate(string dir) {
-    CImg<unsigned char> newImg(img->height(), img->width(), 1, 3, 0);
+    CImg<unsigned char> temp(img->width(), img->height(), 1, 3, 0);
 
-    for (int row = 0; row < img->height(); row++) {
-        for (int cell = 0; cell < img->width(); cell++) {
+    temp.draw_image(0,0,*img);
+
+    img->resize(img->height(), img->width());
+
+    for (int row = 0; row < temp.height(); row++) {
+        for (int cell = 0; cell < temp.width(); cell++) {
 
             int a = 0;
             int b = 0;
 
             if (dir == "r") {
-                a = img->height() - row;
+                a = temp.height() - row;
                 b = cell;
             } else if (dir == "l") {
                 a = row;
-                b = img->width() - cell;
+                b = temp.width() - cell;
             }
 
             unsigned char px[] = {
-                    *(img->data(cell, row, 0, 0)),
-                    *(img->data(cell, row, 0, 1)),
-                    *(img->data(cell, row, 0, 2))};
+                    temp(cell, row, 0, 0),
+                    temp(cell, row, 0, 1),
+                    temp(cell, row, 0, 2)};
 
-            newImg.draw_point(a, b, px);
+            img->draw_point(a, b, px);
         }
     }
-    img = &newImg;
 }
 
 void Image::rescale(int newWidth,int newHeight) {
+    CImg<unsigned char> temp(img->width(), img->height(), 1, 3, 0);
 
-    CImg<unsigned char> newImg(newWidth, newHeight, 1, 3, 0);
+    temp.draw_image(0,0,*img);
 
     float x_ratio = img->width()/newWidth;
     float y_ratio = img->height()/newHeight;
+
+    img->resize(newWidth, newHeight);
 
     float px, py;
     for (int row=0;row < newHeight;row++) {
@@ -112,13 +117,12 @@ void Image::rescale(int newWidth,int newHeight) {
             py = floor(row * y_ratio);
 
             unsigned char color[] = {
-                    *(img->data(px, py, 0, 0)),
-                    *(img->data(px, py, 0, 1)),
-                    *(img->data(px, py, 0, 2))};
-            newImg.draw_point(cell,row,color);
+                    temp(px, py, 0, 0),
+                    temp(px, py, 0, 1),
+                    temp(px, py, 0, 2)};
+            img->draw_point(cell,row,color);
         }
     }
-    img = &newImg;
 }
 
 void Image::exposure(float factor) {
