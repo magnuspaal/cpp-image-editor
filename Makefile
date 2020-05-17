@@ -12,7 +12,12 @@ CXX=g++
 # Set default compiler parameters
 # -Wall 	shows all warnings when compiling, always use this!
 # -std=c++11 	enables the C++11 standard mode
-CXXFLAGS = -Wall -std=c++11
+
+#macos
+#CXXFLAGS = -Wall -std=c++11
+
+#windows 
+CXXFLAGS = -std=gnu++0x
 
 # Step 2: If you use clang++ under Mac OS X, remove these comments
 #CXXFLAGS += -stdlib=libc++

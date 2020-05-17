@@ -7,7 +7,7 @@ using namespace std;
 #define cimg_use_cpp11 0
 #define cimg_display 0
 
-#include "../include/CImg.h"
+#include "CImg.h"
 using namespace cimg_library;
 
 class Image {
