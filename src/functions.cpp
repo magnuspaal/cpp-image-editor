@@ -4,5 +4,5 @@ using namespace std;
 #include "../include/functions.h"
 
 void help() {
-    std::cout << "invert [filename] " << endl;
+    cout << "./main <filename> [-i] [-f (v|h)] [-o (l|r)] [-x <width> <height>] [-e <factor>] " << endl;
 }

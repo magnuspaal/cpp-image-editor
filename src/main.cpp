@@ -14,9 +14,14 @@ using namespace cimg_library;
 int main(int argc, char *argv[])
 {
 
-    if (argc < 2) {
-        throw invalid_argument("A filename must be given.");
-    }
+    if (argc < 3) {
+        if (strcmp(argv[1],"-h") == 0) {
+            help();
+            return 0;
+        } else {
+            throw invalid_argument("A filename and function must be given. ./main -h.");
+        }
+    } 
 
     char* filename = argv[1];
     CImg<unsigned char> image(filename);
@@ -62,14 +67,8 @@ int main(int argc, char *argv[])
             img.rescale(width, height);
             continue;
         }
-        if (function == "-h") {
-            help();
-            itr++;
-            continue;
-        }
         throw invalid_argument("No argument " + function);
     }
-
     img.save(filename);
     return 0;
 }

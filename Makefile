@@ -17,7 +17,7 @@ CXX=g++
 #CXXFLAGS = -Wall -std=c++11
 
 #windows 
-CXXFLAGS = -std=gnu++0x
+CXXFLAGS = -Wall -std=gnu++0x
 
 # Step 2: If you use clang++ under Mac OS X, remove these comments
 #CXXFLAGS += -stdlib=libc++
