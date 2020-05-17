@@ -48,5 +48,6 @@ $(ODIR)/main.o: $(SDIR)/main.cpp
 $(ODIR)/functions.o: $(SDIR)/functions.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
-
-
+clean:
+	rm -r -f obj/*.o
+	rm -r -f main
