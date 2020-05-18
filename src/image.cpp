@@ -155,5 +155,7 @@ void Image::exposure(float factor) {
 }
 
 void Image::save(char* filename) {
-    img->save(filename);
+    string str(filename);
+    str = "new_" + str;
+    img->save(str.c_str());
 }
